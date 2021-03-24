@@ -1,4 +1,5 @@
 from discord.ext import commands
+import lib.database
 import discord
 import dotenv
 import os
@@ -10,6 +11,7 @@ dotenv.load_dotenv()
 class CafeBot(commands.Bot):
     def __init__(self, command_prefix, **options):
         super().__init__(command_prefix, **options)
+        self.db = database.Database(os.environ["DB_URL"])
         extensions = [f[:-3] for f in os.listdir("./cogs") if f.endswith(".py")]
         for exts in extensions:
             try:
