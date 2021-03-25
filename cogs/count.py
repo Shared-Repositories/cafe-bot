@@ -14,10 +14,12 @@ class CountCog(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member) -> None:
         await self.db.add_user(member.id)
+        self.count_map[member.id] = 0
 
     @commands.Cog.listener()
     async def on_member_remove(self, member) -> None:
         await self.db.remove_user(member.id)
+        self.count_map.pop(member.id)
 
 
 def setup(bot):
