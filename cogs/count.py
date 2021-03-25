@@ -24,7 +24,7 @@ class CountCog(commands.Cog):
         self.count_map.pop(member.id)
 
     @commands.Cog.listener()
-    async def on_message(self, message):
+    async def on_message(self, message) -> None:
         if message.author.bot:
             return
         if message.channel.id == 779693431835721728:
@@ -34,7 +34,7 @@ class CountCog(commands.Cog):
         self.count_map[message.author.id] += 1
 
     @tasks.loop(seconds=60)
-    async def count_task(self):
+    async def count_task(self) -> None:
         await self.bot.wait_until_ready()
         now = time.localtime()
         check = all(
@@ -57,6 +57,5 @@ class CountCog(commands.Cog):
         await self.bot.db.reset_count()
 
 
-
-def setup(bot):
+def setup(bot) -> None:
     bot.add_cog(CountCog(bot))
