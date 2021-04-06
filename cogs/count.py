@@ -5,7 +5,7 @@ import time
 class CountCog(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
-        self.count_map = await self.bot.db.get_count_map()
+        self.count_map = self.bot.loop.create_task(self.bot.db.get_count_map())
         self.count_task.start()
 
     @commands.command()
@@ -38,9 +38,9 @@ class CountCog(commands.Cog):
         await self.bot.wait_until_ready()
         now = time.localtime()
         check = all(
-            now.tm_wday == 0,
-            now.tm_hour == 0,
-            now.tm_min == 0
+            (now.tm_wday == 0,
+             now.tm_hour == 0,
+             now.tm_min == 0)
         )
         if not check:
             return
